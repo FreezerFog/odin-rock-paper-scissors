@@ -1,18 +1,5 @@
-function game() {
-  let winCounter = 0;
-
-  for(let i = 1; i <= 5; i++) {
-    winCounter += playRound(playerPlay(),computerPlay());
-  }
-
-  if (winCounter === 0) {
-    return "The games resulted in a tie!";
-  } else if (winCounter > 0) {
-    return "The player wins!";
-  } else {
-    return "The computer wins :("
-  }
-}
+let playerWins = 0;
+let computerWins = 0;
 
 function computerPlay() {
   let selection;
@@ -35,11 +22,6 @@ function computerPlay() {
   return selection;
 }
 
-function playerPlay() {
-  let playerSelection = prompt("Welcome to Rock, Paper, Scissors. Please type your choice:");
-  return playerSelection;
-}
-
 function getRandomInteger(maximumNumber) {
   return Math.floor(Math.random() * maximumNumber);
 }
@@ -49,34 +31,64 @@ function playRound(playerSelection, computerSelection) {
   const computerChoice = computerSelection.toUpperCase();
   let roundDetails = `Player plays ${playerChoice}. Computer plays ${computerChoice}.`;
   let roundResults = ``;
-  let winVal = 0;
+  let winner = ''
 
   if (playerChoice === computerChoice) {
     roundResults = `The round is a tie!`;
   } else if (playerChoice === 'ROCK' && computerChoice === 'PAPER') {
     roundResults = `PAPER covers ROCK. Computer wins!`;
-    winVal = -1;
+    winner = 'Computer';
   } else if (playerChoice === 'ROCK' && computerChoice === 'SCISSORS') {
     roundResults = `ROCK smashes SCISSORS. Player wins!`;
-    winVal = 1;
+    winner = 'Player';
   } else if (playerChoice === 'PAPER' && computerChoice === 'SCISSORS') {
     roundResults = `SCISSORS cut PAPER. Computer wins!`;
-    winVal = -1;
+    winner = 'Computer';
   } else if (playerChoice === 'PAPER' && computerChoice === 'ROCK') {
     roundResults = `PAPER covers ROCK. Player wins!`;
-    winVal = 1;
+    winner = 'Player';
   } else if (playerChoice === 'SCISSORS' && computerChoice === 'ROCK') {
     roundResults = `ROCK smashes SCISSORS. Computer wins!`;
-    winVal = -1;
+    winner = 'Computer';
   } else if (playerChoice === 'SCISSORS' && computerChoice === 'PAPER') {
     roundResults = `SCISSORS cut PAPER. Player wins!`;
-    winVal = 1;
+    winner = 'Player';
   } else {
     roundResults = "HMM this shouldn't be possible";
   }
 
-  console.log(`${roundDetails} ${roundResults}`);
-  return winVal;
+  displayResults(`${roundDetails} ${roundResults}`);
+  updateScore(winner);
 }
 
-console.log(game());
+function displayResults(roundDetails) {
+  const results = document.querySelector('#results');
+  results.textContent = `${roundDetails}`;
+}
+
+function updateScore(roundWinner) {
+  const playerScore = document.querySelector('#player-score');
+  const computerScore = document.querySelector('#computer-score');
+
+  if(roundWinner === "Player") {
+    playerWins += 1;
+    playerScore.textContent = playerWins;
+  } else if (roundWinner === "Computer") {
+    computerWins += 1;
+    computerScore.textContent = computerWins;
+  } else {
+    return;
+  }
+
+  if (playerWins === 5 || computerWins === 5) {
+    announceWinner();
+  }
+}
+
+function announceWinner() {
+  document.querySelectorAll('.btn-selection').forEach(element => {
+    element.disabled = true;
+  });  
+  const announcement = document.querySelector('#announcement');
+  announcement.textContent = playerWins === 5 ? "Player wins! First to five!" : "Computer Wins! First to five!";
+}

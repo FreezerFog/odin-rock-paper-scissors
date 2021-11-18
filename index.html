@@ -9,5 +9,34 @@
 </head>
 <body>
   Rock Paper Scissors | The Game!
+
+  <div >
+    <button 
+      onClick="playRound('Rock', computerPlay())" 
+      data-play="Rock" 
+      class="btn-selection">
+      Rock
+    </button>
+    <button 
+      onClick="playRound('Paper', computerPlay())" 
+      data-play="Paper" 
+      class="btn-selection">
+      Paper
+    </button>
+    <button 
+      onClick="playRound('Scissors', computerPlay())"
+      data-play="Scissors" 
+      class="btn-selection">
+      Scissors
+    </button>
+  </div>
+
+  <div id="announcement"></div>
+
+  <div>
+    <p>Player wins: <span id="player-score">0</span></p>
+    <p>Computer wins: <span id="computer-score">0</span></p>
+    <p id="results"></p>
+  </div>
 </body>
 </html>
